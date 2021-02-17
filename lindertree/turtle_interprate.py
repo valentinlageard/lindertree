@@ -17,14 +17,26 @@ def turtle_interprate(symbols, distance=5, angle=45, init_pos=(0,0), speed=0, pe
 	for symbol in symbols:
 		if symbol.char == 'F':
 			t.down()
-			t.forward(distance)
+			if (symbol.parameters):
+				t.forward(symbol.parameters[0])
+			else:
+				t.forward(distance)
 		elif symbol.char == 'f':
 			t.up()
-			t.forward(distance)
+			if (symbol.parameters):
+				t.forward(symbol.parameters[0])
+			else:
+				t.forward(distance)
 		elif symbol.char == '+':
-			t.left(angle)
+			if (symbol.parameters):
+				t.left(symbol.parameters[0])
+			else:
+				t.left(angle)
 		elif symbol.char == '-':
-			t.right(angle)
+			if (symbol.parameters):
+				t.right(symbol.parameters[0])
+			else:
+				t.right(angle)
 		elif symbol.char == '[':
 			clone = t.clone()
 			clone.hideturtle()
@@ -33,6 +45,8 @@ def turtle_interprate(symbols, distance=5, angle=45, init_pos=(0,0), speed=0, pe
 			t.hideturtle()
 			t = stack.pop()
 			t.showturtle()
+		elif symbol.char == '!' and symbol.parameters:
+			t.pensize(symbol.parameters[0])
 	t.hideturtle()
 
 	while True:
