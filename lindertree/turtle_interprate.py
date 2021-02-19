@@ -7,6 +7,8 @@ from . import lsystem
 def deviate(value, dev):
 	return value * (2 ** np.random.normal(dev[0], dev[1])) + dev[2] + random.uniform(-dev[3], +dev[3])
 
+#def draw_leaf(t):
+
 def turtle_interprate(symbols, distance=5, angle=45, init_pos=(0,0), speed=0, pen_color='white', bg_color='black', mode='instant', print_progress=False, distance_dev=(0,0,0,0), angle_dev=(0,0,0,0)):
 	window = turtle.Screen()
 	window.bgcolor(bg_color)
@@ -57,13 +59,13 @@ def turtle_interprate(symbols, distance=5, angle=45, init_pos=(0,0), speed=0, pe
 			else:
 				t.right(deviate(angle, angle_dev))
 		elif symbol.char == '[':
-			clone = t.clone()
-			clone.hideturtle()
-			stack.append(clone)
+			stack.append([t.pos(), t.heading()])
 		elif symbol.char == ']':
 			t.hideturtle()
-			t = stack.pop()
-			t.showturtle()
+			t.up()
+			pos, heading = stack.pop()
+			t.goto(pos)
+			t.setheading(heading)
 		elif symbol.char == '!' and symbol.parameters:
 			t.pensize(symbol.parameters[0])
 		if print_progress:
